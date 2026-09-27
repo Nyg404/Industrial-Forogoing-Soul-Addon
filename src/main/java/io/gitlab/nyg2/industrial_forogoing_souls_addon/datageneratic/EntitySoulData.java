@@ -1,21 +1,29 @@
 package io.gitlab.nyg2.industrial_forogoing_souls_addon.datageneratic;
 
 import io.gitlab.nyg2.industrial_forogoing_souls_addon.Industrial_forogoing_souls_addon;
+import io.gitlab.nyg2.industrial_forogoing_souls_addon.codec.SoulContainerCodecs;
 import io.gitlab.nyg2.industrial_forogoing_souls_addon.datacomponents.SoulData;
+import io.gitlab.nyg2.industrial_forogoing_souls_addon.register.SoulRegistries;
+import io.gitlab.nyg2.industrial_forogoing_souls_addon.souls.Soul;
+import io.gitlab.nyg2.industrial_forogoing_souls_addon.souls.SoulCodecs;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 
-@EventBusSubscriber(modid = Industrial_forogoing_souls_addon.MODID, bus = EventBusSubscriber.Bus.MOD)
-public class SoulDataMaps {
-    public static final DataMapType<net.minecraft.world.entity.EntityType<?>, SoulData> ENTITY_SOULS =
+import static io.gitlab.nyg2.industrial_forogoing_souls_addon.Industrial_forogoing_souls_addon.MODID;
+
+@EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD)
+public class EntitySoulData {
+    public static final DataMapType<EntityType<?>, Holder<Soul>> ENTITY_SOULS =
             DataMapType.builder(
-                    ResourceLocation.fromNamespaceAndPath(Industrial_forogoing_souls_addon.MODID, "entity_souls"),
+                    ResourceLocation.fromNamespaceAndPath(MODID, "entity_souls"),
                     Registries.ENTITY_TYPE,
-                    SoulData.CODEC
+                    SoulCodecs.SOUL
             ).build();
 
     @SubscribeEvent

@@ -12,6 +12,7 @@ import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+
 @EventBusSubscriber(modid = Industrial_forogoing_souls_addon.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class SoulsCapabilities {
 
@@ -31,13 +32,13 @@ public class SoulsCapabilities {
         event.registerBlockEntity(
                 SOUL_HANDLER,
 
-                SoulBlockRegistry.SOUL_INFUSER_TILE.get(),
+                SoulBlockRegistry.SOUL_INFUSER_BLOCK_ENTITY.get(),
                 (blockEntity, side) -> new SoulCapabilities(blockEntity)
         );
 
         event.registerBlockEntity(
                 Capabilities.EnergyStorage.BLOCK,
-                SoulBlockRegistry.SOUL_INFUSER_TILE.get(),
+                SoulBlockRegistry.SOUL_INFUSER_BLOCK_ENTITY.get(),
                 (blockEntity, side) -> blockEntity.getEnergyStorage()
         );
         event.registerItem(

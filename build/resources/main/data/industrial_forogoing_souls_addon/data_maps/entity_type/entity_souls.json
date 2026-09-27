@@ -1,24 +1,5 @@
 {
   "values": {
-    "minecraft:bee": {
-      "amount": 800,
-      "soul_type": "industrial_forogoing_souls_addon:bee_soul"
-    },
-    "minecraft:cow": {
-      "amount": 500,
-      "soul_type": "industrial_forogoing_souls_addon:cow_soul"
-    },
-    "minecraft:pig": {
-      "amount": 500,
-      "soul_type": "industrial_forogoing_souls_addon:pig_soul"
-    },
-    "minecraft:skeleton": {
-      "amount": 1200,
-      "soul_type": "industrial_forogoing_souls_addon:skeleton_soul"
-    },
-    "minecraft:zombie": {
-      "amount": 1500,
-      "soul_type": "industrial_forogoing_souls_addon:zombie_soul"
-    }
+    "minecraft:zombie": "industrial_forogoing_souls_addon:zombie_soul"
   }
 }

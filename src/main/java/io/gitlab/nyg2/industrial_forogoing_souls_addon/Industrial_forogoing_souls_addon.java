@@ -2,11 +2,8 @@ package io.gitlab.nyg2.industrial_forogoing_souls_addon;
 
 import com.mojang.logging.LogUtils;
 import io.gitlab.nyg2.industrial_forogoing_souls_addon.datacomponents.SoulDataComponents;
-import io.gitlab.nyg2.industrial_forogoing_souls_addon.datageneratic.SoulDataMapProvider;
-import io.gitlab.nyg2.industrial_forogoing_souls_addon.datageneratic.SoulDataMaps;
 import io.gitlab.nyg2.industrial_forogoing_souls_addon.register.Souls;
 import io.gitlab.nyg2.industrial_forogoing_souls_addon.register.block.SoulBlockRegistry;
-import io.gitlab.nyg2.industrial_forogoing_souls_addon.register.key.SoulRegistries;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;

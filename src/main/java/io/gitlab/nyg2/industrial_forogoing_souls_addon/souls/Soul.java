@@ -1,14 +1,12 @@
-package io.gitlab.nyg2.industrial_forogoing_souls_addon.Souls;
+package io.gitlab.nyg2.industrial_forogoing_souls_addon.souls;
 
-public class SoulType {
-    private final float baseMultiplier;
+import net.minecraft.resources.ResourceLocation;
 
+public class Soul {
+    private final ResourceLocation texture;
 
-    public SoulType(float baseMultiplier) {
-        this.baseMultiplier = baseMultiplier;
+    public Soul(ResourceLocation texture) {
+        this.texture = texture;
     }
 
-    public float getBaseMultiplier() {
-        return baseMultiplier;
-    }
 }

@@ -1,11 +1,10 @@
 package io.gitlab.nyg2.industrial_forogoing_souls_addon;
 
-import io.gitlab.nyg2.industrial_forogoing_souls_addon.Industrial_forogoing_souls_addon;
 import io.gitlab.nyg2.industrial_forogoing_souls_addon.capabilities.ISoulContainer;
-
-import io.gitlab.nyg2.industrial_forogoing_souls_addon.datacomponents.SoulData;
-import io.gitlab.nyg2.industrial_forogoing_souls_addon.datageneratic.SoulDataMaps;
+import io.gitlab.nyg2.industrial_forogoing_souls_addon.datageneratic.EntitySoulData;
 import io.gitlab.nyg2.industrial_forogoing_souls_addon.register.SoulsCapabilities;
+import io.gitlab.nyg2.industrial_forogoing_souls_addon.souls.Soul;
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -18,35 +17,41 @@ public class SoulCollectionHandler {
 
     @SubscribeEvent
     public static void onMobDeath(LivingDeathEvent event) {
-        // Выполняем только на сервере
         if (event.getEntity().level().isClientSide()) return;
 
         LivingEntity victim = event.getEntity();
 
-        // Проверяем, что убийца — это игрок
-        if (event.getSource().getEntity() instanceof Player player) {
+        if (!(event.getSource().getEntity() instanceof Player player)) {
+            return;
+        }
 
-            // Узнаем, какая душа положена этому мобу через Data Map
-            SoulData soulData = victim.getType().builtInRegistryHolder().getData(SoulDataMaps.ENTITY_SOULS);
-            if (soulData == null) return; // У моба нет души
+        Holder<Soul> soul = victim.getType()
+                .builtInRegistryHolder()
+                .getData(EntitySoulData.ENTITY_SOULS);
 
-            // Проверяем весь инвентарь игрока на наличие предмета-контейнера душ
-            for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-                ItemStack stack = player.getInventory().getItem(i);
+        if (soul == null) {
+            return;
+        }
 
-                // Проверяем, есть ли у предмета наша capability для душ
-                ISoulContainer soulContainer = stack.getCapability(SoulsCapabilities.SOUL_ITEM_HANDLER, null);
-                if (soulContainer != null) {
-                    // Пытаемся заполнить предмет душами
-                    int filled = soulContainer.fill(soulData.soulType(), soulData.amount());
+        int amount = calculateSoulAmount(victim);
 
-                    if (filled > 0) {
-                        // Если успешно запихнули хоть сколько-то душ, выходим из цикла
-                        // (можно убрать break, если хочешь заполнять сразу все фляги в инвентаре)
-                        break;
-                    }
-                }
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            ItemStack stack = player.getInventory().getItem(i);
+            ISoulContainer soulContainer = stack.getCapability(SoulsCapabilities.SOUL_ITEM_HANDLER, null);
+
+            if (soulContainer == null) {
+                continue;
+            }
+
+            int filled = soulContainer.fill(soul, amount);
+
+            if (filled > 0) {
+                break;
             }
         }
+    }
+
+    private static int calculateSoulAmount(LivingEntity entity) {
+        return 100;
     }
 }

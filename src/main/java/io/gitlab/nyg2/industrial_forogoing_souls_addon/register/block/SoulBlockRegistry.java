@@ -25,7 +25,8 @@ public class SoulBlockRegistry {
     public static final DeferredItem<BlockItem> SOUL_INFUSER_ITEM = ITEMS.registerSimpleBlockItem("soul_infuser", SOUL_INFUSER_BLOCK);
 
     public static final DeferredItem<Item> INJECTOR_SOULS_ITEM = ITEMS.registerItem("injectro_souls_item", InjectorSouls::new);
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SoulInfuserBlockEntity>> SOUL_INFUSER_TILE =
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SoulInfuserBlockEntity>> SOUL_INFUSER_BLOCK_ENTITY =
+
             BLOCK_ENTITY_TYPES.register("soul_infuser", () -> BlockEntityType.Builder.of(
                     SoulInfuserBlockEntity::new,
                     SOUL_INFUSER_BLOCK.get()
@@ -34,7 +35,7 @@ public class SoulBlockRegistry {
 
     public static final BlockWithTile SOUL_INFUSER = new BlockWithTile(
             (DeferredHolder) SOUL_INFUSER_BLOCK,
-            (DeferredHolder) SOUL_INFUSER_TILE
+            (DeferredHolder) SOUL_INFUSER_BLOCK_ENTITY
     );
 
     public static void registry(IEventBus bus){

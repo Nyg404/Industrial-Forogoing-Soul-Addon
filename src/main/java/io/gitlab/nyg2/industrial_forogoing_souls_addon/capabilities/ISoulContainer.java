@@ -1,6 +1,6 @@
 package io.gitlab.nyg2.industrial_forogoing_souls_addon.capabilities;
 
-import io.gitlab.nyg2.industrial_forogoing_souls_addon.Souls.SoulType;
+import io.gitlab.nyg2.industrial_forogoing_souls_addon.souls.Soul;
 import net.minecraft.core.Holder;
 
 public interface ISoulContainer {
@@ -19,13 +19,13 @@ public interface ISoulContainer {
 
     int getStorageTypesCount();
 
-    Holder<SoulType> getSoulType(int index);
+    Holder<Soul> getSoulType(int index);
     int getMaxStorageTypes(int index);
 
-    int fill(Holder<SoulType> soulType, int amount);
-    int drain(Holder<SoulType> soulType, int amount);
+    int fill(Holder<Soul> soulType, int amount);
+    int drain(Holder<Soul> soulType, int amount);
 
-    int getSoul(Holder<SoulType> soulType);
+    int getSoul(Holder<Soul> soulType);
 
 
 }

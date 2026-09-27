@@ -3,7 +3,8 @@ package io.gitlab.nyg2.industrial_forogoing_souls_addon.block;
 import com.buuz135.industrial.block.tile.IndustrialMachineTile;
 import com.hrznstudio.titanium.module.BlockWithTile;
 import io.gitlab.nyg2.industrial_forogoing_souls_addon.SoulMachineTier;
-import io.gitlab.nyg2.industrial_forogoing_souls_addon.Souls.SoulType;
+import io.gitlab.nyg2.industrial_forogoing_souls_addon.register.SoulRegistries;
+import io.gitlab.nyg2.industrial_forogoing_souls_addon.souls.Soul;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -16,10 +17,7 @@ import java.util.Map;
 public abstract class SoulMachineBlockEntity<T extends SoulMachineBlockEntity<T>> extends IndustrialMachineTile<T> {
     protected SoulMachineTier tier;
 
-    public int getMaxSoulCapacity = 1000000;
-
-
-    protected final Map<Holder<SoulType>, Integer> storageSouls = new HashMap<>();
+    protected final Map<Holder<Soul>, Integer> storageSouls = new HashMap<>();
 
     public SoulMachineBlockEntity(BlockWithTile basicTileBlock, BlockPos blockPos, BlockState blockState, SoulMachineTier tier) {
         super(basicTileBlock, blockPos, blockState);
@@ -30,11 +28,11 @@ public abstract class SoulMachineBlockEntity<T extends SoulMachineBlockEntity<T>
         return this.tier.getMaxSouls();
     }
 
-    public Map<Holder<SoulType>, Integer> getStorageSouls() {
+    public Map<Holder<Soul>, Integer> getStorageSouls() {
         return this.storageSouls;
     }
 
-    public int addSouls(Holder<SoulType> soulType, int amount) {
+    public int addSouls(Holder<Soul> soulType, int amount) {
         if (amount <= 0) {
             return 0;
         }
@@ -45,7 +43,7 @@ public abstract class SoulMachineBlockEntity<T extends SoulMachineBlockEntity<T>
             return 0;
         }
 
-        int space = getMaxSoulCapacity - current;
+        int space = tier.getMaxSoulCapacity() - current;
 
         if (space <= 0) {
             return 0;
@@ -59,7 +57,7 @@ public abstract class SoulMachineBlockEntity<T extends SoulMachineBlockEntity<T>
         return toAdd;
     }
 
-    public int extractSouls(Holder<SoulType> soulType, int amount, boolean simulate) {
+    public int extractSouls(Holder<Soul> soulType, int amount, boolean simulate) {
         if (!storageSouls.containsKey(soulType)) return 0;
 
         int currentAmount = storageSouls.get(soulType);
@@ -85,7 +83,7 @@ public abstract class SoulMachineBlockEntity<T extends SoulMachineBlockEntity<T>
 
         CompoundTag soulsTag = new CompoundTag();
         int i = 0;
-        for (Map.Entry<Holder<SoulType>, Integer> entry : storageSouls.entrySet()) {
+        for (Map.Entry<Holder<Soul>, Integer> entry : storageSouls.entrySet()) {
             if (entry.getKey().getRegisteredName() != null) {
                 soulsTag.putString("Soul_" + i, entry.getKey().getRegisteredName());
                 soulsTag.putInt("Amount_" + i, entry.getValue());
@@ -112,7 +110,7 @@ public abstract class SoulMachineBlockEntity<T extends SoulMachineBlockEntity<T>
 
                 var resourceLoc = net.minecraft.resources.ResourceLocation.tryParse(soulName);
                 if (resourceLoc != null) {
-                    var soulOpt = level.registryAccess().registryOrThrow(io.gitlab.nyg2.industrial_forogoing_souls_addon.register.key.SoulRegistries.SOUL_TYPE_REGISTRY_KEY).getHolder(net.minecraft.resources.ResourceKey.create(io.gitlab.nyg2.industrial_forogoing_souls_addon.register.key.SoulRegistries.SOUL_TYPE_REGISTRY_KEY, resourceLoc));
+                    var soulOpt = level.registryAccess().registryOrThrow(SoulRegistries.SOUL_REGISTRY_KEY).getHolder(net.minecraft.resources.ResourceKey.create(SoulRegistries.SOUL_REGISTRY_KEY, resourceLoc));
                     soulOpt.ifPresent(soulTypeHolder -> storageSouls.put(soulTypeHolder, amount));
                 }
             }

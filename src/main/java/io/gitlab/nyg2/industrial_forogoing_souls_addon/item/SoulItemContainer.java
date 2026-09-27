@@ -1,16 +1,14 @@
 package io.gitlab.nyg2.industrial_forogoing_souls_addon.item;
 
-import io.gitlab.nyg2.industrial_forogoing_souls_addon.Souls.SoulType;
 import io.gitlab.nyg2.industrial_forogoing_souls_addon.capabilities.ISoulContainer;
+import io.gitlab.nyg2.industrial_forogoing_souls_addon.datacomponents.SoulData;
 import io.gitlab.nyg2.industrial_forogoing_souls_addon.datacomponents.SoulDataComponents;
-import io.gitlab.nyg2.industrial_forogoing_souls_addon.register.key.SoulRegistries;
+import io.gitlab.nyg2.industrial_forogoing_souls_addon.souls.Soul;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SoulItemContainer implements ISoulContainer {
     private final ItemStack itemStack;
@@ -20,45 +18,37 @@ public class SoulItemContainer implements ISoulContainer {
         this.itemStack = itemStack;
     }
 
-
-    private Map<String, Integer> getMap() {
-        Map<String, Integer> map = itemStack.get(SoulDataComponents.SOULS);
-
-        return map != null ? new java.util.LinkedHashMap<>(map) : new java.util.LinkedHashMap<>();
+    private List<SoulData> getData() {
+        List<SoulData> data = itemStack.get(SoulDataComponents.SOULS);
+        return data != null ? new ArrayList<>(data) : new ArrayList<>();
     }
 
-
-    private void saveMap(Map<String, Integer> map) {
-        if (map.isEmpty()) {
+    private void saveData(List<SoulData> data) {
+        if (data.isEmpty()) {
             itemStack.remove(SoulDataComponents.SOULS);
         } else {
-            itemStack.set(SoulDataComponents.SOULS, map);
+            itemStack.set(SoulDataComponents.SOULS, data);
         }
     }
 
-    private String getSoulKey(Holder<SoulType> soulType) {
-        if (soulType == null) return null;
-        return soulType.unwrapKey().map(key -> key.location().toString()).orElse(null);
+    private SoulData find(List<SoulData> data, Holder<Soul> soul) {
+        for (SoulData soulData : data) {
+            if (soulData.soulType().equals(soul)) {
+                return soulData;
+            }
+        }
+        return null;
     }
 
     @Override
     public int getStorageTypesCount() {
-        return getMap().size();
+        return getData().size();
     }
 
     @Override
-    public Holder<SoulType> getSoulType(int index) {
-        Map<String, Integer> map = getMap();
-        String[] keys = map.keySet().toArray(new String[0]);
-        if (index >= 0 && index < keys.length) {
-            ResourceLocation loc = ResourceLocation.tryParse(keys[index]);
-            if (loc != null) {
-                return SoulRegistries.SOULS_REGISTRY.getHolder(
-                        ResourceKey.create(SoulRegistries.SOUL_TYPE_REGISTRY_KEY, loc)
-                ).orElse(null);
-            }
-        }
-        return null;
+    public Holder<Soul> getSoulType(int index) {
+        List<SoulData> data = getData();
+        return index >= 0 && index < data.size() ? data.get(index).soulType() : null;
     }
 
     @Override
@@ -67,53 +57,57 @@ public class SoulItemContainer implements ISoulContainer {
     }
 
     @Override
-    public int fill(Holder<SoulType> soulType, int amount) {
-        String soulKey = getSoulKey(soulType);
-        if (amount <= 0 || soulKey == null) return 0;
+    public int fill(Holder<Soul> soul, int amount) {
+        if (amount <= 0 || soul == null) return 0;
 
-        Map<String, Integer> map = getMap();
-        int current = map.getOrDefault(soulKey, 0);
-        int space = maxCapacity - current;
+        List<SoulData> data = getData();
+        SoulData existing = find(data, soul);
+
+        if (existing == null) {
+            int toAdd = Math.min(amount, maxCapacity);
+            data.add(new SoulData(soul, toAdd));
+            saveData(data);
+            return toAdd;
+        }
+
+        int space = maxCapacity - existing.amount();
         int toAdd = Math.min(amount, space);
 
         if (toAdd > 0) {
-            map.put(soulKey, current + toAdd);
-            saveMap(map);
+            data.set(data.indexOf(existing), new SoulData(soul, existing.amount() + toAdd));
+            saveData(data);
         }
 
         return toAdd;
     }
 
     @Override
-    public int drain(Holder<SoulType> soulType, int amount) {
-        String soulKey = getSoulKey(soulType);
-        if (amount <= 0 || soulKey == null) return 0;
+    public int drain(Holder<Soul> soul, int amount) {
+        if (amount <= 0 || soul == null) return 0;
 
-        Map<String, Integer> map = getMap();
-        int current = map.getOrDefault(soulKey, 0);
-        if (current <= 0) return 0;
+        List<SoulData> data = getData();
+        SoulData existing = find(data, soul);
 
-        int toExtract = Math.min(current, amount);
-        int leftover = current - toExtract;
+        if (existing == null) return 0;
 
-        if (leftover <= 0) {
-            map.remove(soulKey);
+        int toExtract = Math.min(amount, existing.amount());
+        int remaining = existing.amount() - toExtract;
+
+        if (remaining <= 0) {
+            data.remove(existing);
         } else {
-            map.put(soulKey, leftover);
+            data.set(data.indexOf(existing), new SoulData(soul, remaining));
         }
 
-        saveMap(map);
+        saveData(data);
         return toExtract;
     }
 
     @Override
-    public int getSoul(Holder<SoulType> soulType) {
-        String soulKey = getSoulKey(soulType);
-        if (soulKey == null) return 0;
-        Map<String, Integer> map = getMap();
+    public int getSoul(Holder<Soul> soul) {
+        if (soul == null) return 0;
 
-        return map.getOrDefault(soulKey, 0);
+        SoulData existing = find(getData(), soul);
+        return existing != null ? existing.amount() : 0;
     }
-
-
 }

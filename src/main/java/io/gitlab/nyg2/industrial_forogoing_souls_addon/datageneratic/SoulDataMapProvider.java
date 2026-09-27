@@ -22,12 +22,8 @@ public class SoulDataMapProvider extends DataMapProvider {
     @Override
     protected void gather(HolderLookup.Provider provider) {
         super.gather(provider);
-        this.builder(SoulDataMaps.ENTITY_SOULS)
-                .add(EntityType.ZOMBIE.builtInRegistryHolder(), new SoulData(Souls.ZOMBIE_SOUL, 1500), false)
-                .add(EntityType.SKELETON.builtInRegistryHolder(), new SoulData(Souls.SKELETON_SOUL, 1200), false)
-                .add(EntityType.BEE.builtInRegistryHolder(), new SoulData(Souls.BEE_SOUL, 800), false)
-                .add(EntityType.COW.builtInRegistryHolder(), new SoulData(Souls.COW_SOUL, 500), false)
-                .add(EntityType.PIG.builtInRegistryHolder(), new SoulData(Souls.PIG_SOUL, 500), false);
+        this.builder(EntitySoulData.ENTITY_SOULS).add(EntityType.ZOMBIE.builtInRegistryHolder(), Souls.ZOMBIE_SOUL, false);
+
     }
 
     @SubscribeEvent // on the mod event bus

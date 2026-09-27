@@ -7,17 +7,17 @@ import net.minecraft.core.registries.Registries;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.util.Map;
+import java.util.List;
 
 public class SoulDataComponents {
+
     public static final DeferredRegister.DataComponents REGISTER =
             DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, Industrial_forogoing_souls_addon.MODID);
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Map<String, Integer>>> SOULS =
-            REGISTER.registerComponentType(
-                    "souls",
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<SoulData>>> SOULS =
+            REGISTER.registerComponentType("souls",
                     builder -> builder
-                            .persistent(SoulContainerCodecs.CODEC_MAP)
-                            .networkSynchronized(SoulContainerCodecs.STREAM_CODEC_MAP)
+                            .persistent(SoulContainerCodecs.CODEC_LIST)
+                            .networkSynchronized(SoulContainerCodecs.STREAM_CODEC_LIST)
             );
 }
