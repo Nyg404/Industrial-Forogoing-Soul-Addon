@@ -1,4 +1,33 @@
-/run/
-/build/
-/.idea/
-/.gradle/
+# Gradle
+.gradle/
+build/
+
+# IDE
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+
+# Eclipse
+bin/
+
+# VS Code
+.vscode/
+
+# Minecraft / NeoForge runtime
+run/
+
+# Generated
+src/generated/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Local environment
+.env

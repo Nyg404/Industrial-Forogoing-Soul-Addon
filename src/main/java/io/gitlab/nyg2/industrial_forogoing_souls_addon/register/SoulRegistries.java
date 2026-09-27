@@ -1,7 +1,7 @@
 package io.gitlab.nyg2.industrial_forogoing_souls_addon.register.key;
 
 import io.gitlab.nyg2.industrial_forogoing_souls_addon.Industrial_forogoing_souls_addon;
-import io.gitlab.nyg2.industrial_forogoing_souls_addon.Souls.SoulType;
+import io.gitlab.nyg2.industrial_forogoing_souls_addon.souls.Soul;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -12,8 +12,8 @@ import net.neoforged.neoforge.registries.RegistryBuilder;
 @EventBusSubscriber(modid = Industrial_forogoing_souls_addon.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class SoulRegistries {
 
-    public static final ResourceKey<Registry<SoulType>> SOUL_TYPE_REGISTRY_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(Industrial_forogoing_souls_addon.MODID, "soul_types"));
-    public static final Registry<SoulType> SOULS_REGISTRY = new RegistryBuilder<>(SOUL_TYPE_REGISTRY_KEY)
+    public static final ResourceKey<Registry<Soul>> SOUL_TYPE_REGISTRY_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(Industrial_forogoing_souls_addon.MODID, "soul_types"));
+    public static final Registry<Soul> SOULS_REGISTRY = new RegistryBuilder<>(SOUL_TYPE_REGISTRY_KEY)
             .sync(true)
             .defaultKey(ResourceLocation.fromNamespaceAndPath(Industrial_forogoing_souls_addon.MODID, "soul_empty"))
             .create();
