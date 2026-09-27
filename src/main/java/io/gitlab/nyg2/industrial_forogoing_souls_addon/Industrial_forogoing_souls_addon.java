@@ -3,6 +3,7 @@ package io.gitlab.nyg2.industrial_forogoing_souls_addon;
 import com.mojang.logging.LogUtils;
 import io.gitlab.nyg2.industrial_forogoing_souls_addon.server.datacomponents.SoulDataComponents;
 import io.gitlab.nyg2.industrial_forogoing_souls_addon.server.menu.MenuRegistry;
+import io.gitlab.nyg2.industrial_forogoing_souls_addon.server.recipe.ModRecipes;
 import io.gitlab.nyg2.industrial_forogoing_souls_addon.server.register.Souls;
 import io.gitlab.nyg2.industrial_forogoing_souls_addon.server.register.block.SoulBlockRegistry;
 import net.minecraft.client.Minecraft;
@@ -80,6 +81,7 @@ public class Industrial_forogoing_souls_addon {
         SoulBlockRegistry.registry(modEventBus);
         SoulDataComponents.REGISTER.register(modEventBus);
         MenuRegistry.register(modEventBus);
+        ModRecipes.register(modEventBus);
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (Industrial_forogoing_souls_addon) to respond directly to events.
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.

@@ -9,4 +9,7 @@ public class Soul {
         this.texture = texture;
     }
 
+    public ResourceLocation getTexture() {
+        return texture;
+    }
 }
