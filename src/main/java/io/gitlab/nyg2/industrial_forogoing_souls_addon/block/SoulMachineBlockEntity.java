@@ -3,12 +3,17 @@ package io.gitlab.nyg2.industrial_forogoing_souls_addon.block;
 import com.buuz135.industrial.block.tile.IndustrialMachineTile;
 import com.hrznstudio.titanium.module.BlockWithTile;
 import io.gitlab.nyg2.industrial_forogoing_souls_addon.SoulMachineTier;
+import io.gitlab.nyg2.industrial_forogoing_souls_addon.menu.SoulMachineMenu;
 import io.gitlab.nyg2.industrial_forogoing_souls_addon.register.SoulRegistries;
 import io.gitlab.nyg2.industrial_forogoing_souls_addon.souls.Soul;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.HashMap;
@@ -22,6 +27,22 @@ public abstract class SoulMachineBlockEntity<T extends SoulMachineBlockEntity<T>
     public SoulMachineBlockEntity(BlockWithTile basicTileBlock, BlockPos blockPos, BlockState blockState, SoulMachineTier tier) {
         super(basicTileBlock, blockPos, blockState);
         this.tier = tier;
+    }
+
+    @Override
+    public void openGui(Player player) {
+        if (!(player instanceof ServerPlayer serverPlayer)) {
+            return;
+        }
+
+        serverPlayer.openMenu(
+                new SimpleMenuProvider(
+                        (containerId, inventory, p) ->
+                                new SoulMachineMenu(containerId, inventory, this),
+                        Component.literal("Soul Machine")
+                ),
+                buffer -> buffer.writeBlockPos(worldPosition)
+        );
     }
 
     public int getMaxSoulsTypes() {
