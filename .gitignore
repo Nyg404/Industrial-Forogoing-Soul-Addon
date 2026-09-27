@@ -24,6 +24,7 @@ src/generated/
 # OS
 .DS_Store
 Thumbs.db
+Desktop.ini
 
 # Logs
 *.log
@@ -31,3 +32,23 @@ logs/
 
 # Local environment
 .env
+.env.*
+!.env.example
+
+# Java
+*.class
+hs_err_pid*.log
+replay_pid*.log
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Crash reports
+crash-reports/
+
+# Gradle / JVM temporary
+*.hprof

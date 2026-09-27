@@ -1,9 +1,9 @@
 package io.gitlab.nyg2.industrial_forogoing_souls_addon;
 
-import io.gitlab.nyg2.industrial_forogoing_souls_addon.capabilities.ISoulContainer;
-import io.gitlab.nyg2.industrial_forogoing_souls_addon.datageneratic.EntitySoulData;
-import io.gitlab.nyg2.industrial_forogoing_souls_addon.register.SoulsCapabilities;
-import io.gitlab.nyg2.industrial_forogoing_souls_addon.souls.Soul;
+import io.gitlab.nyg2.industrial_forogoing_souls_addon.server.capabilities.ISoulContainer;
+import io.gitlab.nyg2.industrial_forogoing_souls_addon.server.datageneratic.EntitySoulData;
+import io.gitlab.nyg2.industrial_forogoing_souls_addon.server.register.SoulsCapabilities;
+import io.gitlab.nyg2.industrial_forogoing_souls_addon.server.souls.Soul;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
